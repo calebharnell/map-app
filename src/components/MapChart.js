@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import {
   ComposableMap,
   Geographies,
@@ -10,11 +10,13 @@ import {
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 
-const MapChart = () => {
+const MapChart = ({ setTooltipContent }) => {
   const [data, setData] = useState([]);
   console.log(data)
   return (
+    <>
     <ComposableMap
+      data-tip="" 
       projectionConfig={{
         rotate: [-10, 0, 0],
         scale: 147
@@ -30,6 +32,13 @@ const MapChart = () => {
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
+                  onMouseEnter={() => {
+                    const { NAME } = geo.properties;
+                    setTooltipContent(`${NAME}`);
+                  }}
+                  onMouseLeave={() => {
+                    setTooltipContent("");
+                  }}
                   onClick={() => {
                     if (data.includes(geo.properties.ISO_A3)){
                       const index = data.indexOf(geo.properties.ISO_A3)
@@ -79,7 +88,8 @@ const MapChart = () => {
           }
         </Geographies>
     </ComposableMap>
+    </>
   );
 };
 
-export default MapChart;
+export default memo(MapChart);
