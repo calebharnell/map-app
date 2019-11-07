@@ -12,7 +12,6 @@ const geoUrl =
 
 const MapChart = ({ setTooltipContent }) => {
   const [data, setData] = useState([]);
-  console.log(data)
   return (
     <>
     <ComposableMap
